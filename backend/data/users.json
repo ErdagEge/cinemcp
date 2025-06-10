@@ -25,5 +25,23 @@
     "dislikes": [
       "action"
     ]
+  },
+  {
+    "name": "John Johnny",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Fantasy",
+      "Mystery",
+      "Science Fiction"
+    ],
+    "languages": [
+      "German"
+    ],
+    "dislikes": [
+      "Documentary",
+      "Romance"
+    ]
   }
 ]
