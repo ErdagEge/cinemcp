@@ -12,8 +12,10 @@ router.get("/:name", async (req, res) => {
     const context = buildMCPContext(userName, mood, movies);
     res.send(`<pre>${context}</pre>`);
   } catch (err) {
-    res.status(500).send("Error building MCP prompt");
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
