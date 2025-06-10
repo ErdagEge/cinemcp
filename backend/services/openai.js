@@ -1,9 +1,17 @@
 const { OpenAI } = require("openai");
 require("dotenv").config();
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Gracefully handle missing API key so development can run without OpenAI
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 async function getMovieRecommendation(prompt) {
+  if (!openai) {
+    // Return a simple mock response when no API key is configured
+    return "Based on your preferences, watch Dune and Dune: Part 2.";
+  }
+
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
