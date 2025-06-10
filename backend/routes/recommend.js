@@ -24,7 +24,7 @@ router.get("/:name", async (req, res) => {
       recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
     }
 
-    res.json({ recommendation });
+    res.json({ recommendation, movies });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });

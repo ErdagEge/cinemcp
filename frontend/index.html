@@ -1,15 +1,40 @@
-<h2>🎬 Tell Us About Your Movie Taste</h2>
-<form id="profile-form">
-  <label>Name: <input type="text" name="name" required /></label><br />
-  <label>Preferred Genres (comma-separated): <input type="text" name="genres" /></label><br />
-  <label>Preferred Languages: <input type="text" name="languages" /></label><br />
-  <label>Disliked Genres: <input type="text" name="dislikes" /></label><br />
-  <label>Mood: <input type="text" id="mood-input" name="mood" /></label><br />
-  <button type="submit">Save Profile</button>
-  <button type="button" id="rec-btn">Get Recommendation</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CineMCP</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>🎬 Tell Us About Your Movie Taste</h2>
+  <form id="profile-form">
+    <div class="section">
+      <label>Name: <input type="text" name="name" required></label>
+    </div>
+    <div class="section">
+      <h3>Preferred Genres</h3>
+      <div id="genres-preferred" class="checkbox-group"></div>
+    </div>
+    <div class="section">
+      <h3>Disliked Genres</h3>
+      <div id="genres-disliked" class="checkbox-group"></div>
+    </div>
+    <div class="section">
+      <label>Preferred Languages:
+        <select id="languages-select" name="languages" multiple></select>
+      </label>
+    </div>
+    <div class="section">
+      <label>Mood: <input type="text" id="mood-input" name="mood"></label>
+    </div>
+    <button type="submit">Save Profile</button>
+    <button type="button" id="rec-btn">Get Recommendation</button>
+    <button type="button" id="reset-btn">Reset</button>
+  </form>
 
-<div id="profile-response"></div>
-<div id="recommendation"></div>
+  <div id="profile-response" class="message"></div>
+  <section id="recommendation"></section>
 
-<script src="app.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
