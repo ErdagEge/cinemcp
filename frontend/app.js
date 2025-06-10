@@ -88,19 +88,19 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
     const data = await res.json();
     showRecommendation(data);
   } catch (err) {
-    document.getElementById('recommendation').textContent = 'Error fetching recommendation';
+    document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
   }
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
   document.getElementById('profile-form').reset();
   document.getElementById('profile-response').textContent = '';
-  document.getElementById('recommendation').innerHTML = '';
+  document.getElementById('recommendation-box').innerHTML = '';
 });
 
 function showRecommendation(data) {
-  const container = document.getElementById('recommendation');
-  container.innerHTML = '';
+  const container = document.getElementById('recommendation-box');
+  container.innerHTML = `\n  <div class="recommendation-card">\n    <h3>🎬 Recommendation</h3>\n    <p>${data.recommendation || ''}</p>\n  </div>\n`;
 
   if (Array.isArray(data.movies)) {
     data.movies.forEach(movie => {
@@ -125,11 +125,5 @@ function showRecommendation(data) {
 
       container.appendChild(card);
     });
-  }
-
-  if (data.recommendation) {
-    const p = document.createElement('p');
-    p.textContent = data.recommendation;
-    container.appendChild(p);
   }
 }

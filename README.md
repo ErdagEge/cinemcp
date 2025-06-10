@@ -34,7 +34,7 @@ CineMCP is a movie recommendation web app that dynamically builds context-aware 
 ### 1. Clone and Setup
 
 ```bash
-git clone https://github.com/<your-username>/cinemcp.git
+git clone https://github.com/ErdagEge/cinemcp.git
 cd cinemcp
 npm install
 ```
