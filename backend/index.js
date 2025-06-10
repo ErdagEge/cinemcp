@@ -5,6 +5,14 @@ require("dotenv").config();
 const app = express();
 const PORT = 3000;
 
+// registering the user
+const userRoutes = require("./routes/user");
+app.use("/api/user", userRoutes);
+
+// registering the recommend route
+const recommendRoutes = require("./routes/recommend");
+app.use("/api/recommend", recommendRoutes);
+
 app.use(cors());
 app.use(express.json());
 
