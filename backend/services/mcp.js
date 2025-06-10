@@ -5,7 +5,10 @@ const usersPath = path.join(__dirname, "../data/users.json");
 
 function buildMCPContext(userName, userMood, movieList) {
   const users = JSON.parse(fs.readFileSync(usersPath, "utf-8"));
-  const user = users.find(u => u.name === userName);
+  // find the user by name, case-insensitive and trimmed to avoid common
+  // issues with user input
+  const normalizedName = userName.trim().toLowerCase();
+  const user = users.find(u => u.name.toLowerCase() === normalizedName);
 
   if (!user) throw new Error("User not found");
 
