@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Ege",
+    "genres": ["Sci-Fi","Drama"],
+    "languages": ["English","French"],
+    "dislikes": ["Horror"],
+    "history": []
+  }
+]
