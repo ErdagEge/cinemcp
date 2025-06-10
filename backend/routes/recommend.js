@@ -11,9 +11,20 @@ router.get("/:name", async (req, res) => {
   try {
     const movies = await fetchPopularSciFiMovies(); // later: fetch by genres
     const context = buildMCPContext(userName, mood, movies);
-    const recommendation = await getMovieRecommendation(context);
+    let recommendation;
 
-    res.json({ recommendation }); // return just the answer
+    if (process.env.OPENAI_API_KEY) {
+      try {
+        recommendation = await getMovieRecommendation(context);
+      } catch (err) {
+        console.error("OpenAI request failed, using mock recommendation:", err.message);
+        recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
+      }
+    } else {
+      recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
+    }
+
+    res.json({ recommendation });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
