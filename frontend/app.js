@@ -1,33 +1,135 @@
-document.getElementById("profile-form").addEventListener("submit", async (e) => {
-  e.preventDefault(); // ← important: prevents default GET
+async function loadGenres() {
+  try {
+    const res = await fetch('http://localhost:3000/api/genres');
+    const genres = await res.json();
+    const pref = document.getElementById('genres-preferred');
+    const dislike = document.getElementById('genres-disliked');
+    genres.forEach(g => {
+      const label1 = document.createElement('label');
+      const cb1 = document.createElement('input');
+      cb1.type = 'checkbox';
+      cb1.name = 'genres';
+      cb1.value = g.name;
+      label1.appendChild(cb1);
+      label1.append(' ' + g.name);
+      pref.appendChild(label1);
 
-  const formData = new FormData(e.target);
-  const user = {
-    name: formData.get("name"),
-    genres: formData.get("genres").split(",").map(s => s.trim()),
-    languages: formData.get("languages").split(",").map(s => s.trim()),
-    dislikes: formData.get("dislikes").split(",").map(s => s.trim())
-  };
+      const label2 = document.createElement('label');
+      const cb2 = document.createElement('input');
+      cb2.type = 'checkbox';
+      cb2.name = 'dislikes';
+      cb2.value = g.name;
+      label2.appendChild(cb2);
+      label2.append(' ' + g.name);
+      dislike.appendChild(label2);
+    });
+  } catch (err) {
+    console.error('Failed to load genres', err);
+  }
+}
 
-  const res = await fetch("http://localhost:3000/api/user", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
+function loadLanguages() {
+  const languages = [
+    'English',
+    'Spanish',
+    'French',
+    'German',
+    'Japanese',
+    'Chinese',
+    'Hindi'
+  ];
+  const select = document.getElementById('languages-select');
+  languages.forEach(l => {
+    const option = document.createElement('option');
+    option.value = l;
+    option.textContent = l;
+    select.appendChild(option);
   });
+}
 
-  const data = await res.json();
-  document.getElementById("profile-response").textContent = data.message;
+document.addEventListener('DOMContentLoaded', () => {
+  loadGenres();
+  loadLanguages();
 });
 
-document.getElementById("rec-btn").addEventListener("click", async () => {
+document.getElementById('profile-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = e.target.elements.name.value;
+  const genres = Array.from(document.querySelectorAll("input[name='genres']:checked"))
+    .map(cb => cb.value);
+  const dislikes = Array.from(document.querySelectorAll("input[name='dislikes']:checked"))
+    .map(cb => cb.value);
+  const languages = Array.from(document.getElementById('languages-select').selectedOptions)
+    .map(o => o.value);
+
+  const user = { name, genres, languages, dislikes };
+
+  try {
+    const res = await fetch('http://localhost:3000/api/user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    });
+    const data = await res.json();
+    document.getElementById('profile-response').textContent = data.message;
+  } catch (err) {
+    document.getElementById('profile-response').textContent = 'Error saving profile';
+  }
+});
+
+document.getElementById('rec-btn').addEventListener('click', async () => {
   const name = document.querySelector("input[name='name']").value;
-  const mood = document.getElementById("mood-input").value;
-
+  const mood = document.getElementById('mood-input').value;
   if (!name) return;
-
-  const res = await fetch(
-    `http://localhost:3000/api/recommend/${encodeURIComponent(name)}?mood=${encodeURIComponent(mood)}`
-  );
-  const data = await res.json();
-  document.getElementById("recommendation").textContent = data.recommendation;
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/recommend/${encodeURIComponent(name)}?mood=${encodeURIComponent(mood)}`
+    );
+    const data = await res.json();
+    showRecommendation(data);
+  } catch (err) {
+    document.getElementById('recommendation').textContent = 'Error fetching recommendation';
+  }
 });
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  document.getElementById('profile-form').reset();
+  document.getElementById('profile-response').textContent = '';
+  document.getElementById('recommendation').innerHTML = '';
+});
+
+function showRecommendation(data) {
+  const container = document.getElementById('recommendation');
+  container.innerHTML = '';
+
+  if (Array.isArray(data.movies)) {
+    data.movies.forEach(movie => {
+      const card = document.createElement('div');
+      card.className = 'movie-card';
+
+      if (movie.poster_path) {
+        const img = document.createElement('img');
+        img.src = `https://image.tmdb.org/t/p/w200${movie.poster_path}`;
+        img.alt = movie.title;
+        card.appendChild(img);
+      }
+
+      const title = document.createElement('h4');
+      const year = movie.release_date ? ` (${movie.release_date.slice(0,4)})` : '';
+      title.textContent = movie.title + year;
+      card.appendChild(title);
+
+      const overview = document.createElement('p');
+      overview.textContent = movie.overview;
+      card.appendChild(overview);
+
+      container.appendChild(card);
+    });
+  }
+
+  if (data.recommendation) {
+    const p = document.createElement('p');
+    p.textContent = data.recommendation;
+    container.appendChild(p);
+  }
+}

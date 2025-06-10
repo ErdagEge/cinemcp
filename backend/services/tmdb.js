@@ -10,13 +10,28 @@ const FALLBACK_MOVIES = [
   {
     title: "Interstellar",
     release_date: "2014-11-05",
-    overview: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
+    overview:
+      "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    poster_path: null,
+    original_language: "en",
   },
   {
     title: "The Matrix",
     release_date: "1999-03-31",
-    overview: "A computer hacker learns about the true nature of his reality and his role in the war against its controllers."
-  }
+    overview:
+      "A computer hacker learns about the true nature of his reality and his role in the war against its controllers.",
+    poster_path: null,
+    original_language: "en",
+  },
+];
+
+const FALLBACK_GENRES = [
+  { id: 28, name: "Action" },
+  { id: 12, name: "Adventure" },
+  { id: 35, name: "Comedy" },
+  { id: 18, name: "Drama" },
+  { id: 27, name: "Horror" },
+  { id: 878, name: "Sci-Fi" },
 ];
 
 async function fetchPopularSciFiMovies() {
@@ -43,6 +58,23 @@ async function fetchPopularSciFiMovies() {
   }
 }
 
+async function fetchGenres() {
+  if (!TMDB_API_KEY) {
+    return FALLBACK_GENRES;
+  }
+
+  try {
+    const res = await axios.get(`${BASE_URL}/genre/movie/list`, {
+      params: { api_key: TMDB_API_KEY, language: "en-US" },
+    });
+    return res.data.genres;
+  } catch (err) {
+    console.error("TMDB genres request failed, using fallback:", err.message);
+    return FALLBACK_GENRES;
+  }
+}
+
 module.exports = {
-  fetchPopularSciFiMovies
+  fetchPopularSciFiMovies,
+  fetchGenres
 };
