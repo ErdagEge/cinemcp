@@ -4,9 +4,12 @@
   <label>Preferred Genres (comma-separated): <input type="text" name="genres" /></label><br />
   <label>Preferred Languages: <input type="text" name="languages" /></label><br />
   <label>Disliked Genres: <input type="text" name="dislikes" /></label><br />
+  <label>Mood: <input type="text" id="mood-input" name="mood" /></label><br />
   <button type="submit">Save Profile</button>
+  <button type="button" id="rec-btn">Get Recommendation</button>
 </form>
 
 <div id="profile-response"></div>
+<div id="recommendation"></div>
 
 <script src="app.js"></script>
