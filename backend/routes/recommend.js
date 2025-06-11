@@ -4,13 +4,13 @@ const { fetchPopularSciFiMovies } = require("../services/tmdb");
 const { buildMCPContext } = require("../services/mcp");
 const { getMovieRecommendation } = require("../services/openai");
 
-router.get("/:name", async (req, res) => {
-  const userName = req.params.name;
-  const mood = req.query.mood || "neutral";
+router.post("/", async (req, res) => {
+  const { genres = [], dislikes = [], languages = [], mood = "neutral" } = req.body;
+  const preferences = { genres, dislikes, languages, mood };
 
   try {
     const movies = await fetchPopularSciFiMovies(); // later: fetch by genres
-    const context = buildMCPContext(userName, mood, movies);
+    const context = buildMCPContext(preferences, movies);
     let recommendation;
 
     if (process.env.OPENAI_API_KEY) {

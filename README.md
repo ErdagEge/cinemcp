@@ -8,8 +8,8 @@ CineMCP is a movie recommendation web app that dynamically builds context-aware 
 
 ## 🎯 Features
 
-* User profile creation (genres, languages, dislikes)
-* Session memory to avoid duplicate suggestions
+* Session-based preference input (genres, languages, dislikes)
+* Real-time recommendations without stored profiles
 * TMDB API integration for real-time movie data
 * MCP Context Assembler for rich, personalized prompts
 * LLM-ready output to connect with OpenAI
@@ -25,7 +25,7 @@ CineMCP is a movie recommendation web app that dynamically builds context-aware 
 | Frontend | HTML5, CSS3, JavaScript  |
 | Backend  | Node.js, Express.js      |
 | API      | TMDB, OpenAI             |
-| Storage  | JSON (`users.json`) |
+| Storage  | None (session-based) |
 
 ---
 
@@ -66,13 +66,20 @@ Or, serve it via Express (already configured in `index.js`):
 
 ## 🧪 Testing the API
 
-* After saving a user profile via the form, test this route:
+Use the form to select your preferences, then test this route:
 
 ```
-GET http://localhost:3000/api/recommend/{NAME}?mood=chill
+POST http://localhost:3000/api/recommend
+
+{
+  "genres": ["Sci-Fi"],
+  "dislikes": ["Horror"],
+  "languages": ["English"],
+  "mood": "chill"
+}
 ```
 
-You should see an assembled MCP prompt including user profile and movie data.
+You should see an assembled MCP prompt including your preferences and movie data.
 
 ---
 
@@ -81,12 +88,9 @@ You should see an assembled MCP prompt including user profile and movie data.
 ```
 cinemcp/
 ├── backend/
-│   ├── data/
-│   │   └── users.json          # Stores all user profiles
 │   ├── routes/
-│   │   ├── user.js             # POST /api/user - Save user profile
 │   │   ├── movie.js            # GET /api/movies/sci-fi - TMDB fetcher
-│   │   └── recommend.js        # GET /api/recommend/:name - MCP assembler
+│   │   └── recommend.js        # POST /api/recommend - MCP assembler
 │   ├── services/
 │   │   ├── mcp.js              # Builds final context string for OpenAI
 │   │   ├── tmdb.js             # TMDB API integration logic
@@ -104,24 +108,6 @@ cinemcp/
 └── README.md                   # Project overview
 ```
 
----
-
-## 🛠 Common Issues
-
-### User not being saved?
-
-* Make sure the form doesn’t have `method="GET"` or an `action`.
-* Ensure `e.preventDefault()` is called in `app.js`.
-* Confirm backend route `POST /api/user` is registered in `index.js`.
-* Ensure `express.json()` middleware is used.
-
-### JSON file not updating?
-
-* Check file path in `routes/user.js` matches `backend/data/users.json`
-* Confirm `fs.writeFileSync()` is being called.
-* Manually log `req.body` to ensure data arrives.
-
----
 
 ## 📦 Deployment
 
