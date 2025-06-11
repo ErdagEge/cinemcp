@@ -114,6 +114,20 @@ button:hover {
   gap: 20px;
 }
 
+.movie-section-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  padding-left: 0.5rem;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 1.5rem 0;
+}
+
 .movie-card {
   padding: 15px;
   width: 200px;
