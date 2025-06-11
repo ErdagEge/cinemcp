@@ -89,12 +89,12 @@ You should see an assembled MCP prompt including your preferences and movie data
 cinemcp/
 ├── backend/
 │   ├── routes/
-│   │   ├── movie.js            # GET /api/movies/sci-fi - TMDB fetcher
+│   │   ├── movie.js            # POST /api/movies/by-genres - TMDB fetcher
 │   │   └── recommend.js        # POST /api/recommend - MCP assembler
 │   ├── services/
 │   │   ├── mcp.js              # Builds final context string for OpenAI
 │   │   ├── tmdb.js             # TMDB API integration logic
-│   │   └── openai.js           # (To be implemented) OpenAI API handler
+│   │   └── openai.js           # OpenAI API handler
 │   └── index.js                # Main server setup
 │
 ├── frontend/

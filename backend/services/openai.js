@@ -1,3 +1,4 @@
+// Implemented OpenAI API handler
 const { OpenAI } = require("openai");
 require("dotenv").config();
 
