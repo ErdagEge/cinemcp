@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { fetchPopularSciFiMovies } = require("../services/tmdb");
+const { fetchMoviesByGenres } = require("../services/tmdb");
 
-router.get("/sci-fi", async (req, res) => {
+router.post("/by-genres", async (req, res) => {
+  const { genres = [] } = req.body;
   try {
-    const movies = await fetchPopularSciFiMovies();
+    const movies = await fetchMoviesByGenres(genres);
     res.json(movies);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch movies." });
