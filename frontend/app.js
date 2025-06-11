@@ -3,6 +3,8 @@ const API_BASE =
     ? 'http://localhost:3000'
     : 'https://cinemcp-backend.onrender.com';
 
+let lastRequestBody = null;
+
 async function loadGenres() {
   try {
     const res = await fetch(`${API_BASE}/api/genres`);
@@ -76,39 +78,50 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLanguages();
 });
 
-document.getElementById('profile-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const name = e.target.elements.name.value;
+
+document.getElementById('rec-btn').addEventListener('click', async () => {
   const genres = Array.from(document.querySelectorAll("input[name='genres']:checked"))
     .map(cb => cb.value);
   const dislikes = Array.from(document.querySelectorAll("input[name='dislikes']:checked"))
     .map(cb => cb.value);
   const languages = Array.from(document.querySelectorAll('.chip.selected'))
     .map(chip => chip.textContent);
-
-  const user = { name, genres, languages, dislikes };
+  const mood = document.getElementById('mood-input').value;
 
   try {
-    const res = await fetch(`${API_BASE}/api/user`, {
+    const res = await fetch(`${API_BASE}/api/recommend`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user)
+      body: JSON.stringify({ genres, dislikes, languages, mood })
     });
     const data = await res.json();
-    document.getElementById('profile-response').textContent = data.message;
+    showRecommendation(data);
+    lastRequestBody = { genres, dislikes, languages, mood };
   } catch (err) {
-    document.getElementById('profile-response').textContent = 'Error saving profile';
+    document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
   }
 });
 
-document.getElementById('rec-btn').addEventListener('click', async () => {
-  const name = document.querySelector("input[name='name']").value;
-  const mood = document.getElementById('mood-input').value;
-  if (!name) return;
+document.getElementById('reset-btn').addEventListener('click', () => {
+  document.getElementById('preference-form').reset();
+  document.querySelectorAll('.chip.selected').forEach(chip => {
+    chip.classList.remove('selected');
+    chip.dataset.selected = 'false';
+  });
+  document.getElementById('recommendation-box').innerHTML = '';
+  document.getElementById('movie-grid').innerHTML = '';
+  document.getElementById('recommended-title').style.display = 'none';
+  document.getElementById('refresh-btn').style.display = 'none';
+});
+
+document.getElementById('refresh-btn').addEventListener('click', async () => {
+  if (!lastRequestBody) return;
   try {
-    const res = await fetch(
-      `${API_BASE}/api/recommend/${encodeURIComponent(name)}?mood=${encodeURIComponent(mood)}`
-    );
+    const res = await fetch(`${API_BASE}/api/recommend`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lastRequestBody)
+    });
     const data = await res.json();
     showRecommendation(data);
   } catch (err) {
@@ -116,16 +129,11 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('reset-btn').addEventListener('click', () => {
-  document.getElementById('profile-form').reset();
-  document.getElementById('profile-response').textContent = '';
-  document.getElementById('recommendation-box').innerHTML = '';
-  document.getElementById('movie-grid').innerHTML = '';
-});
-
 function showRecommendation(data) {
   const recommendationBox = document.getElementById('recommendation-box');
   const movieGrid = document.getElementById('movie-grid');
+  document.getElementById('recommended-title').style.display = 'block';
+  document.getElementById('refresh-btn').style.display = 'block';
   recommendationBox.innerHTML = `\n  <div class="recommendation-card">\n    <h3>🎬 Recommendation</h3>\n    <p>${data.recommendation || ''}</p>\n  </div>\n`;
   movieGrid.innerHTML = '';
 

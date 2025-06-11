@@ -8,12 +8,10 @@ app.use(cors());
 app.use(express.json()); // This is **critical** for reading JSON body in POST
 
 // Route setup
-const userRoutes = require("./routes/user");
 const movieRoutes = require("./routes/movie");
 const recommendRoutes = require("./routes/recommend");
 const genreRoutes = require("./routes/genres");
 
-app.use("/api/user", userRoutes);
 app.use("/api/movies", movieRoutes);
 app.use("/api/recommend", recommendRoutes);
 app.use("/api/genres", genreRoutes);
