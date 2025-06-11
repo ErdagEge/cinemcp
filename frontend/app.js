@@ -101,11 +101,14 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   document.getElementById('profile-form').reset();
   document.getElementById('profile-response').textContent = '';
   document.getElementById('recommendation-box').innerHTML = '';
+  document.getElementById('movie-grid').innerHTML = '';
 });
 
 function showRecommendation(data) {
-  const container = document.getElementById('recommendation-box');
-  container.innerHTML = `\n  <div class="recommendation-card">\n    <h3>🎬 Recommendation</h3>\n    <p>${data.recommendation || ''}</p>\n  </div>\n`;
+  const recommendationBox = document.getElementById('recommendation-box');
+  const movieGrid = document.getElementById('movie-grid');
+  recommendationBox.innerHTML = `\n  <div class="recommendation-card">\n    <h3>🎬 Recommendation</h3>\n    <p>${data.recommendation || ''}</p>\n  </div>\n`;
+  movieGrid.innerHTML = '';
 
   if (Array.isArray(data.movies)) {
     data.movies.forEach(movie => {
@@ -128,7 +131,7 @@ function showRecommendation(data) {
       overview.textContent = movie.overview;
       card.appendChild(overview);
 
-      container.appendChild(card);
+      movieGrid.appendChild(card);
     });
   }
 }

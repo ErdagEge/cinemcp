@@ -71,9 +71,19 @@ button:hover {
   font-weight: bold;
 }
 
-#recommendation-box {
+#recommendation-wrapper {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+#recommendation-box {
+  flex: 1;
+}
+
+#movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
 }
 
