@@ -114,7 +114,7 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   });
   document.getElementById('recommendation-box').innerHTML = '';
   document.getElementById('movie-grid').innerHTML = '';
-  document.getElementById('recommended-title').style.display = 'none';
+  document.getElementById('movie-section-title').style.display = 'none';
   document.getElementById('refresh-btn').style.display = 'none';
 });
 
@@ -139,12 +139,23 @@ document.getElementById('refresh-btn').addEventListener('click', async () => {
 function showRecommendation(data) {
   const recommendationBox = document.getElementById('recommendation-box');
   const movieGrid = document.getElementById('movie-grid');
-  document.getElementById('recommended-title').style.display = 'block';
+  const sectionTitle = document.getElementById('movie-section-title');
   document.getElementById('refresh-btn').style.display = 'block';
-  recommendationBox.innerHTML = `\n  <div class="recommendation-card">\n    <h3>🎬 Recommendation</h3>\n    <p>${data.recommendation || ''}</p>\n  </div>\n`;
-  movieGrid.innerHTML = '';
 
-  if (Array.isArray(data.movies)) {
+  recommendationBox.innerHTML = `
+    <div class="recommendation-card">
+      <h3>🎬 AI Recommendation</h3>
+      <p>${data.recommendation || ''}</p>
+    </div>
+    <hr class="section-divider">
+  `;
+
+  movieGrid.innerHTML = '';
+  sectionTitle.textContent = 'More popular movies in your selected genre:';
+  sectionTitle.style.display = 'none';
+
+  if (Array.isArray(data.movies) && data.movies.length > 0) {
+    sectionTitle.style.display = 'block';
     data.movies.forEach(movie => {
       const card = document.createElement('div');
       card.className = 'movie-card';
