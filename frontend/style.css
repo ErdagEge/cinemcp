@@ -31,6 +31,12 @@ form:hover,
   margin-bottom: 15px;
 }
 
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .checkbox-group label {
   display: inline-block;
   background: rgba(255, 255, 255, 0.15);
