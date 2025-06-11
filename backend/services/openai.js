@@ -5,6 +5,7 @@ require("dotenv").config();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 async function getMovieRecommendation(prompt) {
+  console.log("[OpenAI] Using real OpenAI API key:", process.env.OPENAI_API_KEY?.slice(0, 10) + "...");
   console.log("[OpenAI] Prompt:", prompt);
   try {
     const response = await openai.chat.completions.create({
