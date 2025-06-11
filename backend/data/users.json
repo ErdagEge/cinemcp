@@ -43,5 +43,21 @@
       "Documentary",
       "Romance"
     ]
+  },
+  {
+    "name": "Mahmut Mahmutoglu",
+    "genres": [
+      "Action"
+    ],
+    "languages": [
+      "English"
+    ],
+    "dislikes": [
+      "Music",
+      "Romance",
+      "Science Fiction",
+      "TV Movie",
+      "Thriller"
+    ]
   }
 ]
