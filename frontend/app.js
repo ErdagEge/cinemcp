@@ -89,15 +89,19 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
   const mood = document.getElementById('mood-input').value;
 
   try {
+    const payload = { genres, dislikes, languages, mood };
+    console.log('[Frontend] Sending preferences', payload);
     const res = await fetch(`${API_BASE}/api/recommend`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ genres, dislikes, languages, mood })
+      body: JSON.stringify(payload)
     });
     const data = await res.json();
+    console.log('[Frontend] Recommendation response', data);
     showRecommendation(data);
-    lastRequestBody = { genres, dislikes, languages, mood };
+    lastRequestBody = payload;
   } catch (err) {
+    console.error('[Frontend] Recommendation request failed', err);
     document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
   }
 });
@@ -117,14 +121,17 @@ document.getElementById('reset-btn').addEventListener('click', () => {
 document.getElementById('refresh-btn').addEventListener('click', async () => {
   if (!lastRequestBody) return;
   try {
+    console.log('[Frontend] Refreshing recommendation with', lastRequestBody);
     const res = await fetch(`${API_BASE}/api/recommend`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(lastRequestBody)
     });
     const data = await res.json();
+    console.log('[Frontend] Refresh response', data);
     showRecommendation(data);
   } catch (err) {
+    console.error('[Frontend] Refresh request failed', err);
     document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
   }
 });
