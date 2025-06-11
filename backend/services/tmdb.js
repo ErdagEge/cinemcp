@@ -37,10 +37,12 @@ const FALLBACK_GENRES = [
 async function fetchPopularSciFiMovies() {
   // If no API key is present, immediately return the fallback list
   if (!TMDB_API_KEY) {
+    console.log("[TMDB] No API key, using fallback movies");
     return FALLBACK_MOVIES;
   }
 
   try {
+    console.log("[TMDB] Fetching popular Sci-Fi movies");
     const response = await axios.get(`${BASE_URL}/discover/movie`, {
       params: {
         api_key: TMDB_API_KEY,
@@ -50,7 +52,9 @@ async function fetchPopularSciFiMovies() {
       },
     });
 
-    return response.data.results.slice(0, 5); // Just the top 5 for now
+    const results = response.data.results.slice(0, 5); // Just the top 5 for now
+    console.log(`[TMDB] Retrieved ${results.length} movies`);
+    return results;
   } catch (err) {
     // Network or API errors shouldn't prevent development use
     console.error("TMDB request failed, using fallback data:", err.message);
@@ -60,13 +64,16 @@ async function fetchPopularSciFiMovies() {
 
 async function fetchGenres() {
   if (!TMDB_API_KEY) {
+    console.log("[TMDB] No API key, using fallback genres");
     return FALLBACK_GENRES;
   }
 
   try {
+    console.log("[TMDB] Fetching genre list");
     const res = await axios.get(`${BASE_URL}/genre/movie/list`, {
       params: { api_key: TMDB_API_KEY, language: "en-US" },
     });
+    console.log(`[TMDB] Retrieved ${res.data.genres.length} genres`);
     return res.data.genres;
   } catch (err) {
     console.error("TMDB genres request failed, using fallback:", err.message);

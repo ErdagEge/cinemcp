@@ -1,7 +1,7 @@
 function buildMCPContext(preferences, movieList) {
   const { genres = [], dislikes = [], languages = [], mood = "neutral" } = preferences;
 
-  return `
+  const context = `
 [MCP v1.0]
 USER PREFERENCES:
 - Likes: ${genres.join(', ')}
@@ -15,6 +15,9 @@ ${movieList
   .join('\n')}
 
 Prompt: Recommend 2 movies that match these preferences.`;
+
+  console.log("[MCP] Built context:\n", context);
+  return context;
 }
 
 module.exports = { buildMCPContext };
