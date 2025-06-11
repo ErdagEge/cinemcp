@@ -10,23 +10,37 @@ async function loadGenres() {
     const pref = document.getElementById('genres-preferred');
     const dislike = document.getElementById('genres-disliked');
     genres.forEach(g => {
-      const label1 = document.createElement('label');
       const cb1 = document.createElement('input');
       cb1.type = 'checkbox';
       cb1.name = 'genres';
       cb1.value = g.name;
-      label1.appendChild(cb1);
-      label1.append(' ' + g.name);
-      pref.appendChild(label1);
+      cb1.id = `pref-${g.id}`;
 
-      const label2 = document.createElement('label');
+      const label1 = document.createElement('label');
+      label1.htmlFor = cb1.id;
+      label1.textContent = g.name;
+
+      const wrapper1 = document.createElement('div');
+      wrapper1.appendChild(cb1);
+      wrapper1.appendChild(label1);
+
+      pref.appendChild(wrapper1);
+
       const cb2 = document.createElement('input');
       cb2.type = 'checkbox';
       cb2.name = 'dislikes';
       cb2.value = g.name;
-      label2.appendChild(cb2);
-      label2.append(' ' + g.name);
-      dislike.appendChild(label2);
+      cb2.id = `dislike-${g.id}`;
+
+      const label2 = document.createElement('label');
+      label2.htmlFor = cb2.id;
+      label2.textContent = g.name;
+
+      const wrapper2 = document.createElement('div');
+      wrapper2.appendChild(cb2);
+      wrapper2.appendChild(label2);
+
+      dislike.appendChild(wrapper2);
     });
   } catch (err) {
     console.error('Failed to load genres', err);
@@ -43,12 +57,17 @@ function loadLanguages() {
     'Chinese',
     'Hindi'
   ];
-  const select = document.getElementById('languages-select');
-  languages.forEach(l => {
-    const option = document.createElement('option');
-    option.value = l;
-    option.textContent = l;
-    select.appendChild(option);
+  const container = document.getElementById('language-chips');
+  languages.forEach(lang => {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.textContent = lang;
+    chip.dataset.selected = 'false';
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+      chip.dataset.selected = chip.classList.contains('selected');
+    });
+    container.appendChild(chip);
   });
 }
 
@@ -64,8 +83,8 @@ document.getElementById('profile-form').addEventListener('submit', async e => {
     .map(cb => cb.value);
   const dislikes = Array.from(document.querySelectorAll("input[name='dislikes']:checked"))
     .map(cb => cb.value);
-  const languages = Array.from(document.getElementById('languages-select').selectedOptions)
-    .map(o => o.value);
+  const languages = Array.from(document.querySelectorAll('.chip.selected'))
+    .map(chip => chip.textContent);
 
   const user = { name, genres, languages, dislikes };
 
