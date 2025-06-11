@@ -10,8 +10,8 @@ async function getMovieRecommendation(prompt) {
       { role: "system", content: "You are a helpful movie recommendation assistant." },
       { role: "user", content: prompt }
     ],
-    temperature: 0.7,
-    max_tokens: 300
+    temperature: 0.8,
+    max_tokens: 400
   });
 
   return response.choices[0].message.content;
