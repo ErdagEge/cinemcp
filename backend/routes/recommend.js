@@ -30,7 +30,8 @@ router.post("/", async (req, res) => {
         recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
       }
     } else {
-    recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
+      console.log("No API key was found.");
+      recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
     }
 
     console.log("[Route] Recommendation result:", recommendation);
