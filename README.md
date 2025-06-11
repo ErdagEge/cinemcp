@@ -2,7 +2,7 @@
 
 **Smart Movie Recommender powered by a Model Context Protocol (MCP)**
 
-CineMCP is a movie recommendation web app that dynamically builds context-aware prompts for an LLM (like OpenAI's GPT) using user preferences, moods, and real-time movie data from TMDB. It demonstrates the use of a custom Model Context Protocol (MCP) to intelligently personalize each AI response.
+CineMCP is a movie recommendation web app that dynamically builds context-aware prompts for an LLM using user preferences, moods, and real-time movie data from TMDB. It demonstrates the use of a custom Model Context Protocol (MCP) to intelligently personalize each AI response.
 
 ---
 
