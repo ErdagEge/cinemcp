@@ -1,6 +1,11 @@
+const API_BASE =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://cinemcp-backend.onrender.com';
+
 async function loadGenres() {
   try {
-    const res = await fetch('http://localhost:3000/api/genres');
+    const res = await fetch(`${API_BASE}/api/genres`);
     const genres = await res.json();
     const pref = document.getElementById('genres-preferred');
     const dislike = document.getElementById('genres-disliked');
@@ -65,7 +70,7 @@ document.getElementById('profile-form').addEventListener('submit', async e => {
   const user = { name, genres, languages, dislikes };
 
   try {
-    const res = await fetch('http://localhost:3000/api/user', {
+    const res = await fetch(`${API_BASE}/api/user`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(user)
@@ -83,7 +88,7 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
   if (!name) return;
   try {
     const res = await fetch(
-      `http://localhost:3000/api/recommend/${encodeURIComponent(name)}?mood=${encodeURIComponent(mood)}`
+      `${API_BASE}/api/recommend/${encodeURIComponent(name)}?mood=${encodeURIComponent(mood)}`
     );
     const data = await res.json();
     showRecommendation(data);
