@@ -3,6 +3,8 @@ const API_BASE =
     ? 'http://localhost:3000'
     : 'https://cinemcp-backend.onrender.com';
 
+let lastRequestBody = null;
+
 async function loadGenres() {
   try {
     const res = await fetch(`${API_BASE}/api/genres`);
@@ -76,51 +78,49 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLanguages();
 });
 
-document.getElementById('profile-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const name = e.target.elements.name.value;
+
+document.getElementById('rec-btn').addEventListener('click', async () => {
   const genres = Array.from(document.querySelectorAll("input[name='genres']:checked"))
     .map(cb => cb.value);
   const dislikes = Array.from(document.querySelectorAll("input[name='dislikes']:checked"))
     .map(cb => cb.value);
   const languages = Array.from(document.querySelectorAll('.chip.selected'))
     .map(chip => chip.textContent);
-
-  const user = { name, genres, languages, dislikes };
+  const mood = document.getElementById('mood-input').value;
 
   try {
-    const res = await fetch(`${API_BASE}/api/user`, {
+    const res = await fetch(`${API_BASE}/api/recommend`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user)
+      body: JSON.stringify({ genres, dislikes, languages, mood })
     });
     const data = await res.json();
-    document.getElementById('profile-response').textContent = data.message;
-  } catch (err) {
-    document.getElementById('profile-response').textContent = 'Error saving profile';
-  }
-});
-
-document.getElementById('rec-btn').addEventListener('click', async () => {
-  const name = document.querySelector("input[name='name']").value;
-  const mood = document.getElementById('mood-input').value;
-  if (!name) return;
-  try {
-    const res = await fetch(
-      `${API_BASE}/api/recommend/${encodeURIComponent(name)}?mood=${encodeURIComponent(mood)}`
-    );
-    const data = await res.json();
     showRecommendation(data);
+    lastRequestBody = { genres, dislikes, languages, mood };
   } catch (err) {
     document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
   }
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
-  document.getElementById('profile-form').reset();
-  document.getElementById('profile-response').textContent = '';
+  document.getElementById('preference-form').reset();
   document.getElementById('recommendation-box').innerHTML = '';
   document.getElementById('movie-grid').innerHTML = '';
+});
+
+document.getElementById('refresh-btn').addEventListener('click', async () => {
+  if (!lastRequestBody) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/recommend`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lastRequestBody)
+    });
+    const data = await res.json();
+    showRecommendation(data);
+  } catch (err) {
+    document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
+  }
 });
 
 function showRecommendation(data) {

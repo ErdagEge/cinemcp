@@ -1,34 +1,20 @@
-const fs = require("fs");
-const path = require("path");
-
-const usersPath = path.join(__dirname, "../data/users.json");
-
-function buildMCPContext(userName, userMood, movieList) {
-  const users = JSON.parse(fs.readFileSync(usersPath, "utf-8"));
-  // find the user by name, case-insensitive and trimmed to avoid common
-  // issues with user input
-  const normalizedName = userName.trim().toLowerCase();
-  const user = users.find(u => u.name.toLowerCase() === normalizedName);
-
-  if (!user) throw new Error("User not found");
+function buildMCPContext(preferences, movieList) {
+  const { genres = [], dislikes = [], languages = [], mood = "neutral" } = preferences;
 
   return `
 [MCP v1.0]
-ROLE: Movie Recommendation Assistant
-
-USER PROFILE:
-- Name: ${user.name}
-- Likes Genres: ${user.genres.join(", ")}
-- Dislikes: ${user.dislikes.join(", ")}
-- Languages: ${user.languages.join(", ")}
-
-CURRENT MOOD: ${userMood}
+USER PREFERENCES:
+- Likes: ${genres.join(', ')}
+- Dislikes: ${dislikes.join(', ')}
+- Languages: ${languages.join(', ')}
+- Mood: ${mood}
 
 MOVIE DATABASE:
-${movieList.map(m => `- ${m.title} (${m.release_date}) — ${m.overview}`).join("\n")}
+${movieList
+  .map(m => `- ${m.title} (${m.release_date}) \u2014 ${m.overview}`)
+  .join('\n')}
 
-GOAL: Suggest 2 movies the user will enjoy based on their taste and mood.
-`;
+Prompt: Recommend 2 movies that match these preferences.`;
 }
 
 module.exports = { buildMCPContext };

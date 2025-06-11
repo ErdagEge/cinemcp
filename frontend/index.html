@@ -12,10 +12,7 @@
   <h1>CineMCP</h1>
   <p>Get movie recommendations tailored to your taste 🎥</p>
   <h2>🎬 Tell Us About Your Movie Taste</h2>
-  <form id="profile-form">
-    <div class="section">
-      <label>Name: <input type="text" name="name" required></label>
-    </div>
+  <form id="preference-form">
     <div class="section">
       <h3>Preferred Genres</h3>
       <div id="genres-preferred" class="checkbox-group"></div>
@@ -31,16 +28,14 @@
     <div class="section">
       <label>Mood: <input type="text" id="mood-input" name="mood"></label>
     </div>
-    <button type="submit">Save Profile</button>
-    <button type="button" id="rec-btn">Get Recommendation</button>
+    <button type="button" id="rec-btn">Get Recommendations</button>
     <button type="button" id="reset-btn">Reset</button>
   </form>
-
-  <div id="profile-response" class="message"></div>
   <section id="recommendation-wrapper">
     <div id="recommendation-box"></div>
     <h3>🎬 Recommended Movies</h3>
     <div id="movie-grid"></div>
+    <button type="button" id="refresh-btn">🔁 Refresh</button>
   </section>
 
   <script src="app.js"></script>
