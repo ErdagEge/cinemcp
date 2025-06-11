@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { fetchPopularSciFiMovies } = require("../services/tmdb");
+const { fetchMoviesByGenres } = require("../services/tmdb");
 const { buildMCPContext } = require("../services/mcp");
 const { getMovieRecommendation } = require("../services/openai");
 
@@ -11,7 +11,13 @@ router.post("/", async (req, res) => {
   console.log("[Route] /api/recommend request:", preferences);
 
   try {
-    const movies = await fetchPopularSciFiMovies(); // later: fetch by genres
+    let movies;
+    if (genres.length === 0) {
+      console.log("[Route] No genres provided, using fallback movies");
+      movies = await fetchMoviesByGenres();
+    } else {
+      movies = await fetchMoviesByGenres(genres);
+    }
     const context = buildMCPContext(preferences, movies);
     console.log("[Route] Built MCP context for OpenAI");
     let recommendation;

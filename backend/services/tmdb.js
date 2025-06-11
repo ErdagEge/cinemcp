@@ -81,7 +81,54 @@ async function fetchGenres() {
   }
 }
 
+async function fetchMoviesByGenres(genreNames = []) {
+  if (genreNames.length === 0) {
+    console.log("[TMDB] No genres specified, using fallback movies");
+    return FALLBACK_MOVIES;
+  }
+
+  const genres = await fetchGenres();
+  const nameMap = new Map(
+    genres.map((g) => [g.name.toLowerCase(), g.id])
+  );
+
+  const ids = genreNames
+    .map((name) => nameMap.get(name.toLowerCase()))
+    .filter(Boolean);
+
+  console.log("[TMDB] Resolved genres", genreNames, "->", ids);
+
+  if (ids.length === 0) {
+    console.log("[TMDB] No matching genre IDs found, using fallback movies");
+    return FALLBACK_MOVIES;
+  }
+
+  if (!TMDB_API_KEY) {
+    console.log("[TMDB] No API key, using fallback movies");
+    return FALLBACK_MOVIES;
+  }
+
+  try {
+    const response = await axios.get(`${BASE_URL}/discover/movie`, {
+      params: {
+        api_key: TMDB_API_KEY,
+        sort_by: "popularity.desc",
+        with_genres: ids.join(","),
+        language: "en-US",
+      },
+    });
+
+    const results = response.data.results.slice(0, 5);
+    console.log(`[TMDB] Retrieved ${results.length} movies`);
+    return results;
+  } catch (err) {
+    console.error("TMDB request failed, using fallback data:", err.message);
+    return FALLBACK_MOVIES;
+  }
+}
+
 module.exports = {
   fetchPopularSciFiMovies,
-  fetchGenres
+  fetchGenres,
+  fetchMoviesByGenres,
 };
