@@ -20,9 +20,9 @@ router.post("/", async (req, res) => {
         console.error("OpenAI request failed, using mock recommendation:", err.message);
         recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
       }
-    } else {
+      } else {
       recommendation = "Based on your preferences, watch Dune and Dune: Part 2.";
-    }
+      }
 
     res.json({ recommendation, movies });
   } catch (err) {
