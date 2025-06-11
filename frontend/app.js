@@ -104,8 +104,14 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
 
 document.getElementById('reset-btn').addEventListener('click', () => {
   document.getElementById('preference-form').reset();
+  document.querySelectorAll('.chip.selected').forEach(chip => {
+    chip.classList.remove('selected');
+    chip.dataset.selected = 'false';
+  });
   document.getElementById('recommendation-box').innerHTML = '';
   document.getElementById('movie-grid').innerHTML = '';
+  document.getElementById('recommended-title').style.display = 'none';
+  document.getElementById('refresh-btn').style.display = 'none';
 });
 
 document.getElementById('refresh-btn').addEventListener('click', async () => {
@@ -126,6 +132,8 @@ document.getElementById('refresh-btn').addEventListener('click', async () => {
 function showRecommendation(data) {
   const recommendationBox = document.getElementById('recommendation-box');
   const movieGrid = document.getElementById('movie-grid');
+  document.getElementById('recommended-title').style.display = 'block';
+  document.getElementById('refresh-btn').style.display = 'block';
   recommendationBox.innerHTML = `\n  <div class="recommendation-card">\n    <h3>🎬 Recommendation</h3>\n    <p>${data.recommendation || ''}</p>\n  </div>\n`;
   movieGrid.innerHTML = '';
 
