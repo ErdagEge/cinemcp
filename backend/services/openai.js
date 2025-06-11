@@ -16,7 +16,10 @@ async function getMovieRecommendation(prompt) {
       max_tokens: 400
     });
 
-    console.log("[OpenAI] Raw response:", JSON.stringify(response));
+    console.log(
+      "[OpenAI] Response message:",
+      JSON.stringify(response.choices[0].message)
+    );
     const recommendation = response.choices[0].message.content;
     console.log("[OpenAI] Recommendation:", recommendation);
     return recommendation;
