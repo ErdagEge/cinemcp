@@ -12,9 +12,10 @@ CineMCP is a movie recommendation web app that dynamically builds context-aware 
 * Real-time recommendations without stored profiles
 * TMDB API integration for real-time movie data
 * MCP Context Assembler for rich, personalized prompts
-* LLM-ready output to connect with OpenAI
-* Lightweight frontend with Vanilla JS
-* Modular backend using Express.js
+* Optional OpenAI integration for AI-powered suggestions
+* Responsive frontend with glassmorphism style
+* Loading spinner and refresh button for new picks
+* Modular Express backend with a `/api/genres` endpoint
 
 ---
 
@@ -48,6 +49,9 @@ OPENAI_API_KEY=your_openai_key_here
 TMDB_API_KEY=your_tmdb_key_here
 ```
 
+Both keys are optional during development. If omitted, the server falls back to
+sample movies and stubbed recommendations.
+
 ### 3. Run the Server
 
 ```bash
@@ -66,7 +70,7 @@ Or, serve it via Express (already configured in `index.js`):
 
 ## 🧪 Testing the API
 
-Use the form to select your preferences, then test this route:
+Use the form to select your preferences, then test these routes:
 
 ```
 POST http://localhost:3000/api/recommend
@@ -81,6 +85,17 @@ POST http://localhost:3000/api/recommend
 
 You should see an assembled MCP prompt including your preferences and movie data.
 
+Fetch the available genres:
+
+```
+GET http://localhost:3000/api/genres
+```
+
+Run the Jest test suite at any time with:
+
+```bash
+npm test
+```
 ---
 
 ## 📁 Folder Structure
@@ -90,7 +105,8 @@ cinemcp/
 ├── backend/
 │   ├── routes/
 │   │   ├── movie.js            # POST /api/movies/by-genres - TMDB fetcher
-│   │   └── recommend.js        # POST /api/recommend - MCP assembler
+│   │   ├── recommend.js        # POST /api/recommend - MCP assembler
+│   │   └── genres.js          # GET /api/genres - available genres
 │   ├── services/
 │   │   ├── mcp.js              # Builds final context string for OpenAI
 │   │   ├── tmdb.js             # TMDB API integration logic
@@ -121,10 +137,10 @@ Once complete, you can deploy CineMCP on:
 
 ## 📬 Future Plans
 
-* OpenAI integration for real-time movie suggestions
+* Improve AI prompts and recommendation quality
 * Store watch history and add filters
 * Deploy live demo
-* Migrate from JSON to real DB (MongoDB or PostgreSQL)
+* Persist data in a real DB (MongoDB or PostgreSQL)
 
 ---
 
