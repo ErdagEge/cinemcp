@@ -78,6 +78,25 @@ form:hover,
   border: 1px solid rgba(0, 112, 243, 0.5);
 }
 
+/* Preferred/disliked genre distinctions */
+.preferred label {
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.preferred input[type="checkbox"]:checked + label {
+  background: rgba(34, 197, 94, 0.8);
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.disliked label {
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.disliked input[type="checkbox"]:checked + label {
+  background: rgba(239, 68, 68, 0.8);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
 label {
   display: block;
   margin-bottom: 0.5rem;
@@ -110,6 +129,11 @@ button:hover {
 
 button:active {
   transform: scale(0.97);
+}
+
+button:disabled {
+  background: rgba(0, 112, 243, 0.4);
+  cursor: not-allowed;
 }
 
 .message {
@@ -236,4 +260,26 @@ button:active {
 
 .cta-btn:hover {
   background: #1d4ed8;
+}
+
+/* Loading indicator */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+  border-top-color: rgba(0, 112, 243, 0.8);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

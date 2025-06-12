@@ -5,6 +5,18 @@ const API_BASE =
 
 let lastRequestBody = null;
 
+function showLoading() {
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('rec-btn').disabled = true;
+  document.getElementById('refresh-btn').disabled = true;
+}
+
+function hideLoading() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('rec-btn').disabled = false;
+  document.getElementById('refresh-btn').disabled = false;
+}
+
 async function loadGenres() {
   try {
     const res = await fetch(`${API_BASE}/api/genres`);
@@ -23,6 +35,7 @@ async function loadGenres() {
       label1.textContent = g.name;
 
       const wrapper1 = document.createElement('div');
+      wrapper1.className = 'preferred';
       wrapper1.appendChild(cb1);
       wrapper1.appendChild(label1);
 
@@ -39,6 +52,7 @@ async function loadGenres() {
       label2.textContent = g.name;
 
       const wrapper2 = document.createElement('div');
+      wrapper2.className = 'disliked';
       wrapper2.appendChild(cb2);
       wrapper2.appendChild(label2);
 
@@ -80,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.getElementById('rec-btn').addEventListener('click', async () => {
+  showLoading();
   const genres = Array.from(document.querySelectorAll("input[name='genres']:checked"))
     .map(cb => cb.value);
   const dislikes = Array.from(document.querySelectorAll("input[name='dislikes']:checked"))
@@ -103,6 +118,8 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
   } catch (err) {
     console.error('[Frontend] Recommendation request failed', err);
     document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
+  } finally {
+    hideLoading();
   }
 });
 
@@ -116,10 +133,12 @@ document.getElementById('reset-btn').addEventListener('click', () => {
   document.getElementById('movie-grid').innerHTML = '';
   document.getElementById('movie-section-title').style.display = 'none';
   document.getElementById('refresh-btn').style.display = 'none';
+  hideLoading();
 });
 
 document.getElementById('refresh-btn').addEventListener('click', async () => {
   if (!lastRequestBody) return;
+  showLoading();
   try {
     console.log('[Frontend] Refreshing recommendation with', lastRequestBody);
     const res = await fetch(`${API_BASE}/api/recommend`, {
@@ -133,6 +152,8 @@ document.getElementById('refresh-btn').addEventListener('click', async () => {
   } catch (err) {
     console.error('[Frontend] Refresh request failed', err);
     document.getElementById('recommendation-box').textContent = 'Error fetching recommendation';
+  } finally {
+    hideLoading();
   }
 });
 
