@@ -40,13 +40,16 @@ form:hover,
   }
 
 .section {
-  margin-bottom: 15px;
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
 }
 
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
 }
 
 .checkbox-group label {
@@ -56,13 +59,13 @@ form:hover,
   -webkit-backdrop-filter: blur(8px);
   color: #1f2937;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   margin: 5px;
   border-radius: 999px;
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s ease;
-  font-size: 14px;
+  transition: background 0.2s ease, transform 0.1s ease;
+  font-size: 16px;
 }
 
 .checkbox-group input[type="checkbox"] {
@@ -90,19 +93,23 @@ input, select, textarea {
 }
 
 button {
-  padding: 0.75rem 1.5rem;
-  background: rgba(0, 112, 243, 0.6);
+  padding: 0.9rem 1.5rem;
+  background: rgba(0, 112, 243, 0.8);
   color: white;
   border: none;
   border-radius: 12px;
   cursor: pointer;
   margin-right: 5px;
-  font-size: 14px;
-  transition: background 0.2s ease-in-out;
+  font-size: 16px;
+  transition: background 0.2s ease-in-out, transform 0.1s ease;
 }
 
 button:hover {
-  background: rgba(0, 95, 204, 0.75);
+  background: rgba(0, 95, 204, 0.9);
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 .message {
@@ -166,18 +173,22 @@ button:hover {
 
 .chip {
   background: rgba(255, 255, 255, 0.15);
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.1s ease;
 }
 
 .chip.selected {
   background: rgba(0, 112, 243, 0.8);
   color: white;
   border-color: rgba(0, 112, 243, 0.5);
+}
+
+.chip:active {
+  transform: scale(0.95);
 }
 
 @media (max-width: 600px) {
@@ -196,7 +207,7 @@ button:hover {
   button {
     width: 100%;
     display: block;
-    margin: 0.5rem 0;
+    margin: 0.75rem 0;
   }
 
   h2,
@@ -216,4 +227,13 @@ button:hover {
   h4 {
     font-size: 0.95rem;
   }
+}
+
+.cta-btn {
+  background: #2563eb;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.cta-btn:hover {
+  background: #1d4ed8;
 }
