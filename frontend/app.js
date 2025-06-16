@@ -165,7 +165,7 @@ function showRecommendation(data) {
 
   recommendationBox.innerHTML = `
     <div class="recommendation-card">
-      <h3>🎬 AI Recommendation</h3>
+      <h3 class="ai-recommendation-heading">🎬 AI Recommendation</h3>
       <p>${data.recommendation || ''}</p>
     </div>
     <hr class="section-divider">
