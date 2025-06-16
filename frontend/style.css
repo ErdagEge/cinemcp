@@ -20,7 +20,6 @@ h4 {
 }
 
 form,
-.recommendation-card,
 .movie-card {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
@@ -184,9 +183,28 @@ button:disabled {
 }
 
 .recommendation-card {
-  border-left: 5px solid #0070f3;
-  padding: 1rem;
-  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #6366f1;
+  transition: all 0.3s ease-in-out;
+  color: #1f2937;
+  line-height: 1.6;
+  animation: fadeInUp 0.4s ease-in-out;
+}
+
+.recommendation-card p {
+  font-style: italic;
+}
+
+.ai-recommendation-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #4338ca;
 }
 
 .chip-group {
@@ -232,6 +250,11 @@ button:disabled {
 
   .movie-card {
     width: 100%;
+  }
+
+  .recommendation-card {
+    padding: 1rem;
+    font-size: 0.95rem;
   }
 
   button {
@@ -288,4 +311,15 @@ button:disabled {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
