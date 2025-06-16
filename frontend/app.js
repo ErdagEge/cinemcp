@@ -163,10 +163,16 @@ function showRecommendation(data) {
   const sectionTitle = document.getElementById('movie-section-title');
   document.getElementById('refresh-btn').style.display = 'block';
 
+  const formattedRec = (data.recommendation || '')
+    .trim()
+    .split(/\n+/)
+    .map(p => `<p>${p}</p>`)
+    .join('');
+
   recommendationBox.innerHTML = `
     <div class="recommendation-card">
       <h3 class="ai-recommendation-heading">🎬 AI Recommendation</h3>
-      <p>${data.recommendation || ''}</p>
+      ${formattedRec}
     </div>
     <hr class="section-divider">
   `;
