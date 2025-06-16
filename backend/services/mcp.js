@@ -14,7 +14,10 @@ ${movieList
   .map(m => `- ${m.title} (${m.release_date}) \u2014 ${m.overview}`)
   .join('\n')}
 
-Prompt: Based on the user preferences and mood, choose 2 movies from the provided list. Focus a little bit more on the mood. Format your answer as two numbered recommendations, each in its own paragraph.`;
+Prompt: Based on the provided preferences, recommend 2 films. Return each one as:
+
+1. Title (Year)
+Brief paragraph describing the film, and why it matches the user’s taste. Keep it concise and personal.`;
 
   console.log("[MCP] Built context:\n", context);
   return context;
