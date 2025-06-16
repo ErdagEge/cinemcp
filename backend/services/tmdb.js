@@ -62,6 +62,7 @@ const LANGUAGE_CODE_MAP = {
   japanese: 'ja',
   chinese: 'zh',
   hindi: 'hi',
+  turkish: 'tr',
 };
 
 function mapLanguages(languages = []) {
