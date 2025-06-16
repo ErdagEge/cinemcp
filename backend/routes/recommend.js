@@ -14,9 +14,9 @@ router.post("/", async (req, res) => {
     let movies;
     if (genres.length === 0) {
       console.log("[Route] No genres provided, using fallback movies");
-      movies = await fetchMoviesByGenres();
+      movies = await fetchMoviesByGenres([], languages);
     } else {
-      movies = await fetchMoviesByGenres(genres);
+      movies = await fetchMoviesByGenres(genres, languages);
     }
     const context = buildMCPContext(preferences, movies);
     console.log("[Route] Built MCP context for OpenAI");
