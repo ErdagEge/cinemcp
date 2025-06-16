@@ -54,10 +54,36 @@ async function fetchGenres() {
   }
 }
 
-async function fetchMoviesByGenres(genreNames = []) {
+const LANGUAGE_CODE_MAP = {
+  english: 'en',
+  spanish: 'es',
+  french: 'fr',
+  german: 'de',
+  japanese: 'ja',
+  chinese: 'zh',
+  hindi: 'hi',
+};
+
+function mapLanguages(languages = []) {
+  const codes = languages
+    .map(l => LANGUAGE_CODE_MAP[l.toLowerCase()])
+    .filter(Boolean);
+  if (codes.length === 0) return undefined;
+  // TMDB supports a single original language code, use the first selected
+  return codes[0];
+}
+
+function filterFallbackMovies(languages = []) {
+  const code = mapLanguages(languages);
+  if (!code) return FALLBACK_MOVIES;
+  const filtered = FALLBACK_MOVIES.filter(m => m.original_language === code);
+  return filtered.length > 0 ? filtered : FALLBACK_MOVIES;
+}
+
+async function fetchMoviesByGenres(genreNames = [], languages = []) {
   if (genreNames.length === 0) {
     console.log("[TMDB] No genres specified, using fallback movies");
-    return FALLBACK_MOVIES;
+    return filterFallbackMovies(languages);
   }
 
   const genres = await fetchGenres();
@@ -78,7 +104,7 @@ async function fetchMoviesByGenres(genreNames = []) {
 
   if (!TMDB_API_KEY) {
     console.log("[TMDB] No API key, using fallback movies");
-    return FALLBACK_MOVIES;
+    return filterFallbackMovies(languages);
   }
 
   try {
@@ -88,6 +114,7 @@ async function fetchMoviesByGenres(genreNames = []) {
         sort_by: "popularity.desc",
         with_genres: ids.join(","),
         language: "en-US",
+        with_original_language: mapLanguages(languages),
       },
     });
 
