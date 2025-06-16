@@ -5,6 +5,21 @@ const API_BASE =
 
 let lastRequestBody = null;
 
+function parseRecommendation(text = '') {
+  if (!text) return [];
+  // Split by newlines first
+  let parts = text.split(/\n+/).map(p => p.trim()).filter(Boolean);
+  if (parts.length <= 1) {
+    // Fallback: split by sentences
+    parts = text.split(/\.\s+/).map(p => p.trim()).filter(Boolean);
+  }
+  if (parts.length <= 1 && text.includes(' and ')) {
+    // Final fallback: split on "and" for short recommendations
+    parts = text.split(/\band\b/i).map(p => p.trim()).filter(Boolean);
+  }
+  return parts;
+}
+
 function showLoading() {
   document.getElementById('loading').style.display = 'flex';
   document.getElementById('rec-btn').disabled = true;
@@ -163,10 +178,12 @@ function showRecommendation(data) {
   const sectionTitle = document.getElementById('movie-section-title');
   document.getElementById('refresh-btn').style.display = 'block';
 
+  const recLines = parseRecommendation(data.recommendation);
+  const recHtml = recLines.map(line => `<p>${line}</p>`).join('');
   recommendationBox.innerHTML = `
     <div class="recommendation-card">
       <h3 class="ai-recommendation-heading">🎬 AI Recommendation</h3>
-      <p>${data.recommendation || ''}</p>
+      ${recHtml}
     </div>
     <hr class="section-divider">
   `;
