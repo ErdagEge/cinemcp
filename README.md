@@ -12,9 +12,8 @@ CineMCP is a movie recommendation web app that dynamically builds context-aware 
 * Real-time recommendations without stored profiles
 * TMDB API integration for real-time movie data
 * MCP Context Assembler for rich, personalized prompts
-* Optional OpenAI integration for AI-powered suggestions
+* OpenAI integration for AI-powered suggestions
 * Responsive frontend with glassmorphism style
-* Loading spinner and refresh button for new picks
 * Modular Express backend with a `/api/genres` endpoint
 
 ---
