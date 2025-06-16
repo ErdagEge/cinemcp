@@ -71,7 +71,8 @@ function loadLanguages() {
     'German',
     'Japanese',
     'Chinese',
-    'Hindi'
+    'Hindi',
+    'Turkish'
   ];
   const container = document.getElementById('language-chips');
   languages.forEach(lang => {
