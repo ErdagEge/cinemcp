@@ -118,7 +118,7 @@ async function fetchMoviesByGenres(genreNames = [], languages = []) {
       },
     });
 
-    const results = response.data.results.slice(0, 5);
+    const results = response.data.results.slice(0, 4);
     console.log(`[TMDB] Retrieved ${results.length} movies`);
     return results;
   } catch (err) {
