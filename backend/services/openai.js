@@ -11,7 +11,7 @@ async function getMovieRecommendation(prompt) {
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are an insightful film critic. Your job is to recommend thoughtful, creative, or artistically interesting films based on the user’s taste." },
+        { role: "system", content: "You are a helpful movie critic and a recommendation assistant." },
         { role: "user", content: prompt }
       ],
       temperature: 0.8,
