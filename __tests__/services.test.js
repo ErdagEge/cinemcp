@@ -28,7 +28,7 @@ describe('buildMCPContext', () => {
 
 describe('fetchMoviesByGenres', () => {
   test('returns fallback movies when no API key present', async () => {
-    const movies = await fetchMoviesByGenres(['Sci-Fi']);
+    const movies = await fetchMoviesByGenres(['Sci-Fi'], [], 'vote_average.desc', 1990);
     expect(Array.isArray(movies)).toBe(true);
     expect(movies.length).toBeGreaterThan(0);
     const titles = movies.map(m => m.title);

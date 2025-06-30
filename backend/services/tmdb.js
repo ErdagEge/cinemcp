@@ -74,17 +74,31 @@ function mapLanguages(languages = []) {
   return codes[0];
 }
 
-function filterFallbackMovies(languages = []) {
+function filterFallbackMovies(languages = [], minYear) {
   const code = mapLanguages(languages);
-  if (!code) return FALLBACK_MOVIES;
-  const filtered = FALLBACK_MOVIES.filter(m => m.original_language === code);
-  return filtered.length > 0 ? filtered : FALLBACK_MOVIES;
+  let movies = FALLBACK_MOVIES;
+  if (code) {
+    const filtered = movies.filter(m => m.original_language === code);
+    movies = filtered.length > 0 ? filtered : movies;
+  }
+  if (minYear) {
+    movies = movies.filter(m => {
+      const year = parseInt(m.release_date.slice(0, 4));
+      return year >= minYear;
+    });
+  }
+  return movies.length > 0 ? movies : FALLBACK_MOVIES;
 }
 
-async function fetchMoviesByGenres(genreNames = [], languages = []) {
+async function fetchMoviesByGenres(
+  genreNames = [],
+  languages = [],
+  sort = "popularity.desc",
+  minYear
+) {
   if (genreNames.length === 0) {
     console.log("[TMDB] No genres specified, using fallback movies");
-    return filterFallbackMovies(languages);
+    return filterFallbackMovies(languages, minYear);
   }
 
   const genres = await fetchGenres();
@@ -105,17 +119,18 @@ async function fetchMoviesByGenres(genreNames = [], languages = []) {
 
   if (!TMDB_API_KEY) {
     console.log("[TMDB] No API key, using fallback movies");
-    return filterFallbackMovies(languages);
+    return filterFallbackMovies(languages, minYear);
   }
 
   try {
     const response = await axios.get(`${BASE_URL}/discover/movie`, {
       params: {
         api_key: TMDB_API_KEY,
-        sort_by: "popularity.desc",
+        sort_by: sort,
         with_genres: ids.join(","),
         language: "en-US",
         with_original_language: mapLanguages(languages),
+        ...(minYear ? { "primary_release_date.gte": `${minYear}-01-01` } : {}),
       },
     });
 
