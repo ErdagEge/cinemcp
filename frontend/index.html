@@ -28,6 +28,16 @@
     <div class="section">
       <label>Mood: <input type="text" id="mood-input" name="mood"></label>
     </div>
+    <div class="section">
+      <label for="sort-select">Sort by:</label>
+      <select id="sort-select" name="sort">
+        <option value="popularity.desc" selected>Most Popular</option>
+        <option value="vote_average.desc">Highest Rated</option>
+      </select>
+    </div>
+    <div class="section">
+      <label>Minimum Year: <input type="number" id="min-year" name="minYear" min="1900" max="2100"></label>
+    </div>
     <button type="button" id="rec-btn" class="cta-btn">Get Recommendations</button>
     <button type="button" id="reset-btn">Reset</button>
   </form>

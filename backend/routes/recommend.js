@@ -5,8 +5,15 @@ const { buildMCPContext } = require("../services/mcp");
 const { getMovieRecommendation } = require("../services/openai");
 
 router.post("/", async (req, res) => {
-  const { genres = [], dislikes = [], languages = [], mood = "neutral" } = req.body;
-  const preferences = { genres, dislikes, languages, mood };
+  const {
+    genres = [],
+    dislikes = [],
+    languages = [],
+    mood = "neutral",
+    sort = "popularity.desc",
+    minYear,
+  } = req.body;
+  const preferences = { genres, dislikes, languages, mood, sort, minYear };
 
   console.log("[Route] /api/recommend request:", preferences);
 
@@ -14,9 +21,9 @@ router.post("/", async (req, res) => {
     let movies;
     if (genres.length === 0) {
       console.log("[Route] No genres provided, using fallback movies");
-      movies = await fetchMoviesByGenres([], languages);
+      movies = await fetchMoviesByGenres([], languages, sort, minYear);
     } else {
-      movies = await fetchMoviesByGenres(genres, languages);
+      movies = await fetchMoviesByGenres(genres, languages, sort, minYear);
     }
     const context = buildMCPContext(preferences, movies);
     console.log("[Route] Built MCP context for OpenAI");
