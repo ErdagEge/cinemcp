@@ -14,7 +14,7 @@ describe('/api/recommend route', () => {
   test('responds with recommendation and movies', async () => {
     const res = await request(app)
       .post('/api/recommend')
-      .send({ genres: ['Sci-Fi'] });
+      .send({ genres: ['Sci-Fi'], sort: 'vote_average.desc', minYear: 2000 });
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty('recommendation');
     expect(res.body).toHaveProperty('movies');

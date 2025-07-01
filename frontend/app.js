@@ -103,9 +103,12 @@ document.getElementById('rec-btn').addEventListener('click', async () => {
   const languages = Array.from(document.querySelectorAll('.chip.selected'))
     .map(chip => chip.textContent);
   const mood = document.getElementById('mood-input').value;
+  const sort = document.getElementById('sort-select').value;
+  const minYearValue = document.getElementById('min-year').value;
+  const minYear = minYearValue ? parseInt(minYearValue, 10) : undefined;
 
   try {
-    const payload = { genres, dislikes, languages, mood };
+    const payload = { genres, dislikes, languages, mood, sort, minYear };
     console.log('[Frontend] Sending preferences', payload);
     const res = await fetch(`${API_BASE}/api/recommend`, {
       method: 'POST',
