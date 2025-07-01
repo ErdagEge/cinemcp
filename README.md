@@ -1,6 +1,6 @@
 # CineMCP
 
-**Smart Movie Recommender powered by a Model Context Protocol (MCP)**
+**Smart Movie Recommender powered by Model Context Protocol (MCP)**
 
 CineMCP is a movie recommendation web app that dynamically builds context-aware prompts for an LLM using user preferences, moods, and real-time movie data from TMDB. It demonstrates the use of a custom Model Context Protocol (MCP) to intelligently personalize each AI response.
 
@@ -8,7 +8,7 @@ CineMCP is a movie recommendation web app that dynamically builds context-aware 
 
 ## 🎯 Features
 
-* Session-based preference input (genres, languages, dislikes)
+* Session-based preference input (genres, languages, dislikes, mood, popularity/rating, release date)
 * Real-time recommendations without stored profiles
 * TMDB API integration for real-time movie data
 * MCP Context Assembler for rich, personalized prompts
@@ -105,7 +105,7 @@ cinemcp/
 │   ├── routes/
 │   │   ├── movie.js            # POST /api/movies/by-genres - TMDB fetcher
 │   │   ├── recommend.js        # POST /api/recommend - MCP assembler
-│   │   └── genres.js          # GET /api/genres - available genres
+│   │   └── genres.js           # GET /api/genres - available genres
 │   ├── services/
 │   │   ├── mcp.js              # Builds final context string for OpenAI
 │   │   ├── tmdb.js             # TMDB API integration logic
