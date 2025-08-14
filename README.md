@@ -138,7 +138,6 @@ Once complete, you can deploy CineMCP on:
 
 * Improve AI prompts and recommendation quality
 * Store watch history and add filters
-* Deploy live demo
 * Persist data in a real DB (MongoDB or PostgreSQL)
 
 ---
